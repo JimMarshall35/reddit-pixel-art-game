@@ -1,5 +1,5 @@
 GAME.tileTypes = [];
-
+GAME.updateableTileTypes = [];
 /*
 A TileType should be created for each tile that needs to be generated, each should correspond to a specific color on the data map.
 If you tile needs collisions, make sure to also define a CollisionType.
@@ -9,12 +9,12 @@ new TileType(NAME, COLORS, OPTIONS);
 [NAME]			should be a string in camel case
 [COLOR]			should be an array of 3 values, a red green and blue (which determinds what color to look for on the data map)
 [OPTIONS]	
-	[required]	set to true if every map must have at least one of these tiles
-	[minNumberAllowed]	a number which indicates the minimum number of these tiles allowed per map (only triggered if required, or at least one is present)
-	[maxNumberAllowed]	a number which indicates the total number of these tiles allowed per map
-	[onLoad]	this is run on EACH instance of this tile when the level is loaded. the first argument contains the coordinates as an object, and it must return an object. if not specified, it will use defaultTileLoader to spawn a single sprite on each of those tiles.
-	[uiInit]	this is run once when the game is loaded, used for adding elements to the UI screen
-	[uiUpdate]	this is run every frame, used for updated values on UI elements
+[required]	set to true if every map must have at least one of these tiles
+[minNumberAllowed]	a number which indicates the minimum number of these tiles allowed per map (only triggered if required, or at least one is present)
+[maxNumberAllowed]	a number which indicates the total number of these tiles allowed per map
+[onLoad]	this is run on EACH instance of this tile when the level is loaded. the first argument contains the coordinates as an object, and it must return an object. if not specified, it will use defaultTileLoader to spawn a single sprite on each of those tiles.
+[uiInit]	this is run once when the game is loaded, used for adding elements to the UI screen
+[uiUpdate]	this is run every frame, used for updated values on UI elements
 */
 
 class TileType {
@@ -38,6 +38,8 @@ class TileType {
 
 		this.uiInit();
 	}
+
+	
 
 	defaultTileLoader (object) {
 		console.log('default loader',this.name)
@@ -63,5 +65,21 @@ class TileType {
 		if (color[1]>255) console.error(errorMessage,'green greater than 255');
 		if (color[2]>255) console.error(errorMessage,'blue greater than 255');
 		return color;
+	}
+}
+
+
+class UpdateableTileType extends TileType{
+	constructor(tileName, color, options){
+		super(tileName, color, options);
+		this.onUpdate = options.onUpdate || (_=>console.error("you instantiated an UpdateableTileType without an update function. Nice one Einstein!"));
+		GAME.updateableTileTypes.push(this);
+	}
+
+	update(deltaTime){
+		for(let i=0; i<GAME.currentMap[this.name].length; i++){
+			let obj = GAME.currentMap[this.name][i];
+			this.onUpdate(obj, deltaTime)
+		}
 	}
 }

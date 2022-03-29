@@ -108,6 +108,8 @@ function gameLoop (delta) {
 
 	//update ui (this could be done only when needed, but it probably doesnt take much to run every frame)
 	GAME.tileTypes.forEach(type => type.uiUpdate());
+	
+	GAME.updateableTileTypes.forEach(type => type.update(delta));
 
 	debug.onLoop();
 };

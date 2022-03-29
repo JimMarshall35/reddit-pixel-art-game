@@ -28,3 +28,13 @@ new CollisionType('killTiles', 'rect',
 		GAME.player.y = GAME.currentMap.entrance[0].y;
 	}
 );
+
+function OnKillTileCollision(){
+	//sound
+	zzfx(...[1.09,,373,,.25,.42,4,2.97,.6,,,,.19,.7,-4.4,.7,,.42,.03]);
+
+	GAME.currentMap.lives--;
+
+	GAME.player.x = GAME.currentMap.entrance[0].x;
+	GAME.player.y = GAME.currentMap.entrance[0].y;
+}
