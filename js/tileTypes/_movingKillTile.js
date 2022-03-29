@@ -2,7 +2,7 @@
 const UP = {x : 0, y : 1};
 const DOWN = {x : 0, y : -1};
 const LEFT = {x : -1, y : 0};
-const RIGHT = {x : 1, y : 0};;
+const RIGHT = {x : 1, y : 0};
 
 new UpdateableTileType('horizontalMovingKillTiles', [255,174,200], {
 	onLoad: (kt) => {
@@ -12,8 +12,8 @@ new UpdateableTileType('horizontalMovingKillTiles', [255,174,200], {
 		GAME.level.addChild(sprite);
 
 		return {
-			x: kt.x * TILESIZE,
-			y: kt.y * TILESIZE,
+			x: sprite.x,
+			y: sprite.y,
 			sprite: sprite,
 			
 			Direction : RIGHT,
